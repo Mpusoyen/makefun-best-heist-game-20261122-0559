@@ -20,7 +20,7 @@ export const ALARM = {
   max: 100,
   guardRate: 58, // a second at point blank in a guard's cone, scaled down with distance
   cameraRate: 40,
-  decay: 10, // per second while nobody sees the thief
+  decay: 9, // per second while nobody sees the thief
   diamondTrip: 12, // the pedestal's pressure plate, paid once when the diamond is lifted
 };
 

@@ -1,3 +1,7 @@
+// The Meridian Job — a top-down stealth heist in the Meridian Gallery, built for make.fun's
+// best-heist-game bounty: cross the gallery unseen, lift the Aurora Diamond, and get out
+// before the alarm meter fills.
+//
 // A working best-game-01 entry (Node 22, standard library only): the game is this directory's
 // game/ folder, plain static files a desktop browser loads offline (game/index.html and its ES
 // modules, no library and no network request), and the program hands it in. It copies game/ and
@@ -19,6 +23,8 @@ import { buildDossier } from './vendor/makefun-game.ts';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+
+console.log('The Meridian Job: handing in the gallery heist (game/ + screenshots/ + dossier.json)');
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
