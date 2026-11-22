@@ -16,7 +16,7 @@
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-game.ts';
@@ -24,7 +24,10 @@ import { buildDossier } from './vendor/makefun-game.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
-console.log('The Meridian Job: handing in the gallery heist (game/ + screenshots/ + dossier.json)');
+// Count what is about to be handed in, so the run reports the real size of the entry it copied.
+const gameFileCount = readdirSync(join(here, 'game'), { recursive: true }).length;
+const shotFileCount = existsSync(join(here, 'screenshots')) ? readdirSync(join(here, 'screenshots')).length : 0;
+console.log(`The Meridian Job: handing in the gallery heist — ${gameFileCount} game files and ${shotFileCount} screenshots, plus dossier.json`);
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
@@ -45,3 +48,9 @@ writeFileSync(
     game_path_max_bytes: 1000,
   }),
 );
+
+// Hand-in complete: the output directory now holds everything the grader and the judge need —
+// the playable static game under game/, the maker's screenshots under screenshots/, and
+// dossier.json, the summary buildDossier wrote from them (screenshot sheet plus a source
+// outline). Nothing else is required from this program.
+console.log(`The Meridian Job: hand-in complete — game, screenshots and dossier.json are in ${out}`);
